@@ -1,0 +1,17 @@
+com\turnora\model\entity\TicketEvent.class
+com\turnora\model\entity\Notification$NotificationBuilder.class
+com\turnora\model\entity\TicketEvent$TicketEventBuilder.class
+com\turnora\model\entity\User$UserBuilder.class
+com\turnora\model\entity\ServiceType$ServiceTypeBuilder.class
+com\turnora\model\entity\Counter.class
+com\turnora\model\enums\CounterStatus.class
+com\turnora\model\entity\Counter$CounterBuilder.class
+com\turnora\model\enums\PriorityType.class
+com\turnora\model\entity\Notification.class
+com\turnora\model\entity\ServiceType.class
+com\turnora\model\entity\User.class
+com\turnora\model\enums\Role.class
+com\turnora\TurnoraApplication.class
+com\turnora\model\entity\Ticket$TicketBuilder.class
+com\turnora\model\entity\Ticket.class
+com\turnora\model\enums\TicketStatus.class
