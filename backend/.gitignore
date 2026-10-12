@@ -1,0 +1,18 @@
+# Maven build output
+target/
+
+# Secrets (keep only application.properties.example in GitHub)
+src/main/resources/application.properties
+.env
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db

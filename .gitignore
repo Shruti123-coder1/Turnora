@@ -1,0 +1,16 @@
+# Backend build output and secrets
+backend/target/
+backend/src/main/resources/application.properties
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# General
+.env
+*.log
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
