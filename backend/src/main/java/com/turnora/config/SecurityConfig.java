@@ -48,6 +48,7 @@ public class SecurityConfig {
                         // Public URLs
                         .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/services").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/board").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/tickets").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
