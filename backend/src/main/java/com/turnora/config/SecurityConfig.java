@@ -56,7 +56,7 @@ public class SecurityConfig {
                         // Student only (this rule must come before the public tracking URL below)
                         .requestMatchers(HttpMethod.GET, "/api/tickets/my").hasRole("STUDENT")
                         .requestMatchers(HttpMethod.PUT, "/api/tickets/*/cancel").hasRole("STUDENT")
-                        .requestMatchers("/api/notifications/**").hasRole("STUDENT")
+                        .requestMatchers("/api/notifications/**").hasAnyRole("STUDENT", "STAFF", "ADMIN")
 
                         // Public live tracking: GET /api/tickets/F-014
                         .requestMatchers(HttpMethod.GET, "/api/tickets/*").permitAll()

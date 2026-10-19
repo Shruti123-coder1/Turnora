@@ -9,5 +9,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     List<Notification> findTop50ByUserIdAndChannelOrderByCreatedAtDesc(Long userId, String channel);
 
+    List<Notification> findByUserIdAndChannelAndReadFalse(Long userId, String channel);
+
+    long countByUserIdAndChannelAndReadFalse(Long userId, String channel);
+
     boolean existsByTicketIdAndType(Long ticketId, String type);
 }

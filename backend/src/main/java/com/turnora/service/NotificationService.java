@@ -5,7 +5,9 @@ import com.turnora.exception.AppException;
 import com.turnora.model.entity.Notification;
 import com.turnora.model.entity.Ticket;
 import com.turnora.model.entity.User;
+import com.turnora.model.enums.Role;
 import com.turnora.repository.NotificationRepository;
+import com.turnora.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -23,6 +25,7 @@ import java.util.List;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final UserRepository userRepository;
     private final SmsService smsService;
     private final SimpMessagingTemplate messagingTemplate;
 
@@ -54,19 +57,8 @@ public class NotificationService {
     public void notifyTicket(Ticket ticket, String type, String message, boolean sendSms) {
         User user = ticket.getUser();
 
-        Notification inApp = notificationRepository.save(Notification.builder()
-                .user(user)
-                .ticket(ticket)
-                .type(type)
-                .channel("IN_APP")
-                .phone(ticket.getPhone())
-                .message(message)
-                .build());
-
         if (user != null) {
-            TicketDto.NotificationResponse payload = toResponse(inApp);
-            Long userId = user.getId();
-            runAfterCommit(() -> messagingTemplate.convertAndSend("/topic/user/" + userId, payload));
+            notifyUser(user, ticket, type, message);
         }
 
         if (sendSms) {
@@ -82,6 +74,34 @@ public class NotificationService {
             String phone = ticket.getPhone();
             runAfterCommit(() -> smsService.send(smsId, phone, message));
         }
+    }
+
+    // Role audiences are expanded into one private, persisted notification per active user.
+    // This keeps reads and real-time updates scoped to the intended recipient.
+    @Transactional
+    public void notifyRole(Role role, Ticket ticket, String type, String message) {
+        userRepository.findByRoleAndActiveTrueOrderByIdAsc(role)
+                .forEach(user -> notifyUser(user, ticket, type, message));
+    }
+
+    @Transactional
+    public void notifyOperations(Ticket ticket, String type, String message) {
+        notifyRole(Role.STAFF, ticket, type, message);
+        notifyRole(Role.ADMIN, ticket, type, message);
+    }
+
+    private void notifyUser(User user, Ticket ticket, String type, String message) {
+        Notification inApp = notificationRepository.save(Notification.builder()
+                .user(user)
+                .ticket(ticket)
+                .type(type)
+                .channel("IN_APP")
+                .phone(ticket != null ? ticket.getPhone() : null)
+                .message(message)
+                .build());
+        TicketDto.NotificationResponse payload = toResponse(inApp);
+        Long userId = user.getId();
+        runAfterCommit(() -> messagingTemplate.convertAndSend("/topic/user/" + userId, payload));
     }
 
     @Transactional(readOnly = true)
@@ -100,6 +120,19 @@ public class NotificationService {
         }
         n.setRead(true);
         return toResponse(notificationRepository.save(n));
+    }
+
+    @Transactional(readOnly = true)
+    public long unreadCount(Long userId) {
+        return notificationRepository.countByUserIdAndChannelAndReadFalse(userId, "IN_APP");
+    }
+
+    @Transactional
+    public long markAllRead(Long userId) {
+        List<Notification> unread = notificationRepository.findByUserIdAndChannelAndReadFalse(userId, "IN_APP");
+        unread.forEach(notification -> notification.setRead(true));
+        notificationRepository.saveAll(unread);
+        return unread.size();
     }
 
     // Must be called inside a transaction (the ticket is loaded lazily)
