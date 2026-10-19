@@ -41,7 +41,7 @@ export default function History() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Queue history</h1>
+      <h1 className="page-heading">Queue history</h1>
 
       <form onSubmit={search} className="card grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-6">
         <div><label className="label" htmlFor="hf">From</label><input id="hf" type="date" className="input" value={filters.from} onChange={set('from')} /></div>
@@ -70,7 +70,7 @@ export default function History() {
       {data && (
         <>
           <p className="text-sm text-muted">{data.totalElements} tokens found</p>
-          <div className="card overflow-x-auto">
+          <div className="table-shell">
             <table className="w-full min-w-[820px]">
               <thead className="border-b border-line">
                 <tr><th className="th">Token</th><th className="th">Office</th><th className="th">Customer</th><th className="th">Status</th><th className="th">Counter</th><th className="th">Joined</th><th className="th">Wait</th><th className="th">Service</th></tr>

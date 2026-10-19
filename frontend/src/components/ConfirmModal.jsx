@@ -17,7 +17,7 @@ export function Modal({ open, title, onClose, children, wide = false }) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4"
       onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}
     >
-      <div className={`card max-h-[90vh] w-full overflow-auto p-6 shadow-xl ${wide ? 'max-w-3xl' : 'max-w-lg'}`}>
+      <div className={`card max-h-[90vh] w-full overflow-auto p-5 shadow-xl sm:p-6 ${wide ? 'max-w-3xl' : 'max-w-lg'}`}>
         <h2 className="mb-4 text-xl font-bold">{title}</h2>
         {children}
       </div>

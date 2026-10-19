@@ -54,14 +54,14 @@ export default function ManageStaff() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">Staff</h1>
+        <h1 className="page-heading">Staff</h1>
         <button type="button" className="btn btn-primary" onClick={() => { setFormError(''); setOpen(true); }}>Add staff member</button>
       </div>
       {error && <p role="alert" className="text-sm text-alert">{error}</p>}
       {!list && !error && <Loader />}
 
       {list && (
-        <div className="card overflow-x-auto">
+        <div className="table-shell">
           <table className="w-full min-w-[640px]">
             <thead className="border-b border-line"><tr><th className="th">Name</th><th className="th">Email</th><th className="th">Phone</th><th className="th">Counter</th><th className="th">Status</th><th className="th" /></tr></thead>
             <tbody className="divide-y divide-line">

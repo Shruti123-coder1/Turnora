@@ -7,6 +7,7 @@ import { COUNTER_STATUSES } from '../../utils/constants';
 import { labelOf } from '../../utils/formatTime';
 
 const EMPTY = { name: '', status: 'ACTIVE', staffId: '', serviceIds: [] };
+const uniqueById = (items) => Array.from(new Map(items.map((item) => [item.id, item])).values());
 
 export default function ManageCounters() {
   const [counters, setCounters] = useState(null);
@@ -20,7 +21,7 @@ export default function ManageCounters() {
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(() => {
-    adminApi.counters().then(setCounters).catch((e) => setError(errorMessage(e)));
+    adminApi.counters().then((items) => setCounters(uniqueById(items))).catch((e) => setError(errorMessage(e)));
   }, []);
 
   useEffect(() => {
@@ -71,14 +72,14 @@ export default function ManageCounters() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">Counters</h1>
+        <h1 className="page-heading">Counters</h1>
         <button type="button" className="btn btn-primary" onClick={() => openForm(null)}>Add counter</button>
       </div>
       {error && <p role="alert" className="text-sm text-alert">{error}</p>}
       {!counters && !error && <Loader />}
 
       {counters && (
-        <div className="card overflow-x-auto">
+        <div className="table-shell">
           <table className="w-full min-w-[680px]">
             <thead className="border-b border-line"><tr><th className="th">Counter</th><th className="th">Status</th><th className="th">Staff</th><th className="th">Offices served</th><th className="th">Now</th><th className="th" /></tr></thead>
             <tbody className="divide-y divide-line">
@@ -103,7 +104,7 @@ export default function ManageCounters() {
       <Modal open={Boolean(editing)} title={editing?.id ? 'Edit counter' : 'Add counter'} onClose={() => setEditing(null)}>
         <form onSubmit={save} className="space-y-4">
           <div><label className="label" htmlFor="cname">Counter name</label><input id="cname" className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required /></div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="label" htmlFor="cstat">Status</label>
               <select id="cstat" className="input" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>

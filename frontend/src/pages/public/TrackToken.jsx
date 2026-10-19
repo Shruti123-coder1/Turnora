@@ -51,16 +51,17 @@ export default function TrackToken() {
   };
 
   return (
-    <div className="mx-auto max-w-md">
-      <h1 className="text-3xl font-bold">Track a token</h1>
-      <form onSubmit={submit} className="mt-6 flex gap-2">
+    <div className="mx-auto w-full max-w-3xl">
+      <h1 className="page-heading">Track a token</h1>
+      <p className="page-subtitle">See your live position and service status in one place.</p>
+      <form onSubmit={submit} className="card mt-6 flex gap-3 p-4 sm:p-5">
         <label htmlFor="token" className="sr-only">Token number</label>
-        <input id="token" className="input uppercase" placeholder="For example F-014" value={input} onChange={(e) => setInput(e.target.value)} />
-        <button className="btn btn-primary">Track</button>
+        <input id="token" className="input min-h-12 min-w-0 uppercase text-base" placeholder="For example F-014" value={input} onChange={(e) => setInput(e.target.value)} />
+        <button className="btn btn-primary min-h-12 shrink-0 px-5 text-base">Track</button>
       </form>
       <p className="mt-2 text-sm text-muted">Only tokens taken today can be tracked.</p>
 
-      <div className="mt-6">
+      <div className="mt-7 mx-auto max-w-2xl">
         {loading && <Loader />}
         {error && <p role="alert" className="text-sm text-alert">{error}</p>}
         {ticket && !loading && <TokenCard ticket={ticket} />}

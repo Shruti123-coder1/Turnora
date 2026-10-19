@@ -6,6 +6,8 @@ export const authApi = {
   login: (body) => data(api.post('/auth/login', body)),
   register: (body) => data(api.post('/auth/register', body)),
   me: () => data(api.get('/auth/me')),
+  updateProfile: (body) => data(api.put('/auth/profile', body)),
+  changePassword: (body) => data(api.put('/auth/password', body)),
 };
 
 export const servicesApi = {

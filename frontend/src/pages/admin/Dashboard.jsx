@@ -24,7 +24,7 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h1 className="text-3xl font-bold">Overview</h1>
+        <h1 className="page-heading">Overview</h1>
         <div>
           <label className="label" htmlFor="date">Date</label>
           <input id="date" type="date" className="input" value={date} max={todayISO()} onChange={(e) => e.target.value && setDate(e.target.value)} />
@@ -35,7 +35,7 @@ export default function AdminDashboard() {
 
       {data && (
         <>
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard label="Tokens issued" value={data.totalTokens} />
             <StatCard label="Waiting now" value={data.waiting} hint={`${data.inProgress} in progress`} />
             <StatCard label="Completed" value={data.completed} hint={`${data.noShow} no show, ${data.cancelled} cancelled`} />

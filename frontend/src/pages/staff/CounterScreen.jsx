@@ -7,6 +7,8 @@ import useStomp from '../../hooks/useStomp';
 import { COUNTER_STATUSES } from '../../utils/constants';
 import { labelOf } from '../../utils/formatTime';
 
+const uniqueById = (items) => Array.from(new Map(items.map((item) => [item.id, item])).values());
+
 export default function CounterScreen() {
   const [counters, setCounters] = useState(null);
   const [counterId, setCounterId] = useState('');
@@ -20,8 +22,9 @@ export default function CounterScreen() {
     counterApi
       .list()
       .then((list) => {
-        setCounters(list);
-        if (list.length) setCounterId(String(list[0].id));
+        const countersForUser = uniqueById(list);
+        setCounters(countersForUser);
+        if (countersForUser.length) setCounterId(String(countersForUser[0].id));
       })
       .catch((e) => setError(errorMessage(e)));
     servicesApi.list().then(setOffices).catch(() => {});
@@ -68,7 +71,7 @@ export default function CounterScreen() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">{state?.counterName || 'Counter screen'}</h1>
+          <h1 className="page-heading">{state?.counterName || 'Counter screen'}</h1>
           <p className="mt-1 text-muted">Call the next person, then mark the visit complete.</p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -116,7 +119,7 @@ export default function CounterScreen() {
                 </div>
 
                 <div className="mt-6 flex flex-wrap items-end gap-3 border-t border-line pt-4">
-                  <div className="min-w-[200px] flex-1">
+                  <div className="min-w-0 flex-1">
                     <label className="label" htmlFor="transfer">Send to another office</label>
                     <select id="transfer" className="input" value={transferTo} onChange={(e) => setTransferTo(e.target.value)}>
                       <option value="">Select an office</option>

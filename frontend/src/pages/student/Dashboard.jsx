@@ -45,7 +45,7 @@ export default function StudentDashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold">Hello, {user.fullName.split(' ')[0]}</h1>
+        <h1 className="page-heading">Hello, {user.fullName.split(' ')[0]}</h1>
         <p className="mt-1 text-muted">Your live tokens are shown below and update on their own.</p>
       </div>
       {error && <p role="alert" className="text-sm text-alert">{error}</p>}

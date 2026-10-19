@@ -31,8 +31,8 @@ export default function DisplayBoard() {
   useStomp('/topic/board', load);
 
   return (
-    <div className="min-h-screen bg-[#0E1716] p-6 text-white md:p-10">
-      <header className="flex items-end justify-between">
+    <div className="min-h-screen overflow-x-hidden bg-sky-950 p-4 text-white sm:p-6 md:p-10">
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="font-display text-lg text-signal">Turnora</p>
           <h1 className="text-4xl font-bold md:text-6xl">Now serving</h1>
@@ -48,7 +48,7 @@ export default function DisplayBoard() {
           {board.counters.map((c) => {
             const active = c.status === 'ACTIVE';
             return (
-              <div key={c.id} className="rounded-lg border border-white/15 bg-white/5 p-5">
+            <div key={c.id} className="rounded-xl border border-white/15 bg-white/5 p-5 shadow-lg shadow-black/10">
                 <div className="flex items-center justify-between text-sm text-white/70">
                   <span>{c.name}</span>
                   {!active && <span className="rounded bg-white/10 px-2 py-0.5 text-xs">{c.status === 'PAUSED' ? 'On a break' : 'Closed'}</span>}
@@ -63,7 +63,7 @@ export default function DisplayBoard() {
           {board.counters.length === 0 && <p className="text-white/60">No counters are set up yet.</p>}
         </section>
 
-        <aside className="rounded-lg border border-white/15 bg-white/5 p-5">
+        <aside className="rounded-xl border border-white/15 bg-white/5 p-5 shadow-lg shadow-black/10">
           <h2 className="text-xl font-bold">Recent calls</h2>
           <ul className="mt-3 divide-y divide-white/10">
             {board.recentCalls.map((r, i) => (

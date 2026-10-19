@@ -37,7 +37,7 @@ export default function Notifications() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">Notifications</h1>
+        <h1 className="page-heading">Notifications</h1>
         {unread > 0 && <button type="button" className="btn btn-ghost" onClick={markAll}>Mark all as read</button>}
       </div>
       {error && <p role="alert" className="text-sm text-alert">{error}</p>}
@@ -46,7 +46,7 @@ export default function Notifications() {
 
       <ul className="space-y-3">
         {items?.map((n) => (
-          <li key={n.id} className={`card flex items-start justify-between gap-4 p-4 ${n.read ? '' : 'border-teal bg-teal-soft/40'}`}>
+          <li key={n.id} className={`card flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4 ${n.read ? '' : 'border-teal bg-teal-soft/40'}`}>
             <div>
               <p className="text-sm">{n.message}</p>
               <p className="mt-1 text-xs text-muted">

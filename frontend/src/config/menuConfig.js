@@ -4,10 +4,12 @@ export const MENU = {
     { to: '/student/tokens', label: 'My tokens' },
     { to: '/student/notifications', label: 'Notifications' },
     { to: '/join', label: 'Join a queue' },
+    { to: '/profile', label: 'Profile' },
   ],
   STAFF: [
     { to: '/staff', label: 'Counter screen', end: true },
     { to: '/board', label: 'Display board' },
+    { to: '/profile', label: 'Profile' },
   ],
   ADMIN: [
     { to: '/admin', label: 'Overview', end: true },
@@ -16,5 +18,6 @@ export const MENU = {
     { to: '/admin/staff', label: 'Staff' },
     { to: '/admin/history', label: 'Queue history' },
     { to: '/staff', label: 'Counter screen' },
+    { to: '/profile', label: 'Profile' },
   ],
 };

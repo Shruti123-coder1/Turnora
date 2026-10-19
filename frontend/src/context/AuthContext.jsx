@@ -29,21 +29,23 @@ export function AuthProvider({ children }) {
     return u;
   }, []);
 
+  const refreshUser = useCallback(async () => {
+    const refreshed = await authApi.me();
+    localStorage.setItem(USER_KEY, JSON.stringify(refreshed));
+    setUser(refreshed);
+    return refreshed;
+  }, []);
+
   // Check the saved token when the app opens
   useEffect(() => {
     if (!localStorage.getItem(TOKEN_KEY)) {
       setLoading(false);
       return;
     }
-    authApi
-      .me()
-      .then((u) => {
-        localStorage.setItem(USER_KEY, JSON.stringify(u));
-        setUser(u);
-      })
+    refreshUser()
       .catch(clear)
       .finally(() => setLoading(false));
-  }, [clear]);
+  }, [clear, refreshUser]);
 
   const login = useCallback(async (email, password) => save(await authApi.login({ email, password })), [save]);
   const register = useCallback(async (form) => save(await authApi.register(form)), [save]);
@@ -52,8 +54,8 @@ export function AuthProvider({ children }) {
   }, [clear]);
 
   const value = useMemo(
-    () => ({ user, loading, login, register, logout }),
-    [user, loading, login, register, logout]
+    () => ({ user, loading, login, register, logout, refreshUser }),
+    [user, loading, login, register, logout, refreshUser]
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

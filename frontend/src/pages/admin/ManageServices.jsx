@@ -54,14 +54,14 @@ export default function ManageServices() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">Offices</h1>
+        <h1 className="page-heading">Offices</h1>
         <button type="button" className="btn btn-primary" onClick={() => openForm(null)}>Add office</button>
       </div>
       {error && <p role="alert" className="text-sm text-alert">{error}</p>}
       {!list && !error && <Loader />}
 
       {list && (
-        <div className="card overflow-x-auto">
+        <div className="table-shell">
           <table className="w-full min-w-[640px]">
             <thead className="border-b border-line"><tr><th className="th">Prefix</th><th className="th">Office</th><th className="th">Avg service</th><th className="th">Waiting</th><th className="th">Status</th><th className="th" /></tr></thead>
             <tbody className="divide-y divide-line">
@@ -86,7 +86,7 @@ export default function ManageServices() {
       <Modal open={Boolean(editing)} title={editing?.id ? 'Edit office' : 'Add office'} onClose={() => setEditing(null)}>
         <form onSubmit={save} className="space-y-4">
           <div><label className="label" htmlFor="sname">Office name</label><input id="sname" className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required /></div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div><label className="label" htmlFor="sprefix">Token prefix</label><input id="sprefix" className="input uppercase" maxLength={5} value={form.prefix} onChange={(e) => setForm({ ...form, prefix: e.target.value })} required /></div>
             <div><label className="label" htmlFor="savg">Avg minutes per person</label><input id="savg" type="number" min="1" max="120" step="0.5" className="input" value={form.avgServiceMinutes} onChange={(e) => setForm({ ...form, avgServiceMinutes: e.target.value })} required /></div>
           </div>

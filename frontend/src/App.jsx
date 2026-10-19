@@ -22,6 +22,7 @@ import ManageServices from './pages/admin/ManageServices';
 import ManageCounters from './pages/admin/ManageCounters';
 import ManageStaff from './pages/admin/ManageStaff';
 import History from './pages/admin/History';
+import Profile from './pages/common/Profile';
 
 export default function App() {
   return (
@@ -59,6 +60,12 @@ export default function App() {
           <Route path="counters" element={<ManageCounters />} />
           <Route path="staff" element={<ManageStaff />} />
           <Route path="history" element={<History />} />
+        </Route>
+      </Route>
+
+      <Route element={<PrivateRoute roles={['STUDENT', 'STAFF', 'ADMIN']} />}>
+        <Route path="profile" element={<DashboardLayout />}>
+          <Route index element={<Profile />} />
         </Route>
       </Route>
     </Routes>

@@ -73,4 +73,11 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     // Latest calls of today (display board)
     List<Ticket> findByQueueDateAndCalledAtIsNotNullOrderByCalledAtDesc(LocalDate queueDate, Pageable pageable);
+
+    // All tickets of one day, with office and counter loaded (used by the admin analytics)
+    @Query("select t from Ticket t "
+            + "join fetch t.service "
+            + "left join fetch t.counter "
+            + "where t.queueDate = :date")
+    List<Ticket> findForDay(@Param("date") LocalDate date);
 }

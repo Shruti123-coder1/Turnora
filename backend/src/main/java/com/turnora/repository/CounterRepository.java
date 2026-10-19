@@ -19,6 +19,10 @@ public interface CounterRepository extends JpaRepository<Counter, Long> {
 
     Optional<Counter> findByStaffId(Long staffId);
 
+    boolean existsByNameIgnoreCase(String name);
+
+    boolean existsByNameIgnoreCaseAndIdNot(String name, Long id);
+
     // Number of counters with this status that serve the given office
     @Query("select count(c) from Counter c join c.services s where s.id = :serviceId and c.status = :status")
     long countByServiceAndStatus(@Param("serviceId") Long serviceId, @Param("status") CounterStatus status);

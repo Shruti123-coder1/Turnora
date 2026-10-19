@@ -30,8 +30,9 @@ export default function Login() {
 
   return (
     <div className="mx-auto max-w-md">
-      <h1 className="text-3xl font-bold">Log in</h1>
-      <form onSubmit={submit} className="card mt-6 space-y-4 p-6">
+      <h1 className="page-heading">Welcome back</h1>
+      <p className="page-subtitle">Log in to manage your queue activity.</p>
+      <form onSubmit={submit} className="card mt-6 space-y-4 p-5 sm:p-6">
         <div>
           <label className="label" htmlFor="email">Email</label>
           <input id="email" name="email" type="email" className="input" value={form.email} onChange={change} autoComplete="email" required />

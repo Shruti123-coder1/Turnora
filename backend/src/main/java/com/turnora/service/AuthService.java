@@ -58,6 +58,35 @@ public class AuthService {
         return toResponse(user);
     }
 
+    @Transactional
+    public AuthDto.UserResponse updateProfile(JwtUtil.AuthUser authUser, AuthDto.UpdateProfileRequest req) {
+        User user = userRepository.findById(authUser.id())
+                .orElseThrow(() -> AppException.unauthorized("Please login to continue"));
+
+        user.setFullName(req.fullName().trim());
+        user.setPhone(req.phone().trim());
+        if (user.getRole() == Role.STUDENT) {
+            user.setPrn(req.prn() == null || req.prn().isBlank() ? null : req.prn().trim());
+        }
+
+        return toResponse(userRepository.save(user));
+    }
+
+    @Transactional
+    public void changePassword(JwtUtil.AuthUser authUser, AuthDto.ChangePasswordRequest req) {
+        User user = userRepository.findById(authUser.id())
+                .orElseThrow(() -> AppException.unauthorized("Please login to continue"));
+
+        if (!passwordEncoder.matches(req.currentPassword(), user.getPasswordHash())) {
+            throw AppException.badRequest("Current password is wrong");
+        }
+        if (passwordEncoder.matches(req.newPassword(), user.getPasswordHash())) {
+            throw AppException.badRequest("New password must be different from the current password");
+        }
+        user.setPasswordHash(passwordEncoder.encode(req.newPassword()));
+        userRepository.save(user);
+    }
+
     private AuthDto.UserResponse toResponse(User u) {
         return new AuthDto.UserResponse(u.getId(), u.getFullName(), u.getEmail(), u.getPrn(),
                 u.getPhone(), u.getRole().name());

@@ -34,6 +34,27 @@ public class AuthDto {
             @NotBlank(message = "Password is required") String password) {
     }
 
+    public record UpdateProfileRequest(
+            @NotBlank(message = "Full name is required")
+            @Size(max = 100, message = "Full name is too long")
+            String fullName,
+
+            @NotBlank(message = "Phone number is required")
+            @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
+            String phone,
+
+            @Size(max = 30, message = "PRN is too long")
+            String prn) {
+    }
+
+    public record ChangePasswordRequest(
+            @NotBlank(message = "Current password is required") String currentPassword,
+
+            @NotBlank(message = "New password is required")
+            @Size(min = 6, max = 72, message = "New password must be 6 to 72 characters")
+            String newPassword) {
+    }
+
     public record UserResponse(
             Long id,
             String fullName,

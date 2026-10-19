@@ -8,7 +8,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "counters")
+@Table(name = "counters", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_counter_name", columnNames = "name"),
+        @UniqueConstraint(name = "uk_counter_staff", columnNames = "staff_id")
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,7 +32,7 @@ public class Counter {
     private CounterStatus status = CounterStatus.ACTIVE;
 
     // Staff member who works at this counter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id")
     private User staff;
 

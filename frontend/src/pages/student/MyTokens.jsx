@@ -43,7 +43,7 @@ export default function MyTokens() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold">My tokens</h1>
+        <h1 className="page-heading">My tokens</h1>
         <div>
           <label htmlFor="filter" className="sr-only">Filter by status</label>
           <select id="filter" className="input" value={filter} onChange={(e) => setFilter(e.target.value)}>
@@ -63,7 +63,7 @@ export default function MyTokens() {
       )}
 
       {rows.length > 0 && (
-        <div className="card overflow-x-auto">
+        <div className="table-shell">
           <table className="w-full min-w-[640px]">
             <thead className="border-b border-line">
               <tr>

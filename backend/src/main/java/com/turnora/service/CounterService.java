@@ -75,7 +75,14 @@ public class CounterService {
 
     // Copies the request into the counter after checking staff and offices
     private void apply(Counter counter, AdminDto.CounterRequest req) {
-        counter.setName(req.name().trim());
+        String name = req.name().trim();
+        boolean nameTaken = counter.getId() == null
+                ? counterRepository.existsByNameIgnoreCase(name)
+                : counterRepository.existsByNameIgnoreCaseAndIdNot(name, counter.getId());
+        if (nameTaken) {
+            throw AppException.conflict("A counter with this name already exists");
+        }
+        counter.setName(name);
         counter.setStatus(parseStatus(req.status()));
 
         // Offices

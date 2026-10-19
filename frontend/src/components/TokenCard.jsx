@@ -24,8 +24,8 @@ function message(t) {
 export default function TokenCard({ ticket, onCancel }) {
   const waiting = ticket.status === 'WAITING';
   return (
-    <article className="card relative overflow-hidden">
-      <div className="flex items-start justify-between gap-3 p-5">
+    <article className="card relative overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:shadow-md">
+      <div className="flex items-start justify-between gap-3 p-5 sm:p-6">
         <div>
           <p className="text-sm text-muted">{ticket.serviceName}</p>
           <p className="mt-1 font-display text-5xl font-bold tabular-nums">{ticket.tokenNumber}</p>
@@ -43,9 +43,9 @@ export default function TokenCard({ ticket, onCancel }) {
         <span className="absolute -right-3 -top-3 h-6 w-6 rounded-full border border-line bg-paper" />
       </div>
 
-      <div className="p-5">
+      <div className="p-5 sm:p-6">
         {waiting && (
-          <dl className="grid grid-cols-3 gap-3 text-sm">
+          <dl className="grid grid-cols-3 gap-2 text-sm sm:gap-3">
             <div>
               <dt className="text-muted">Position</dt>
               <dd className="font-display text-xl font-bold tabular-nums">{ticket.position ?? '-'}</dd>

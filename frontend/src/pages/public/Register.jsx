@@ -36,8 +36,9 @@ export default function Register() {
 
   return (
     <div className="mx-auto max-w-md">
-      <h1 className="text-3xl font-bold">Create your student account</h1>
-      <form onSubmit={submit} className="card mt-6 space-y-4 p-6">
+      <h1 className="page-heading">Create your account</h1>
+      <p className="page-subtitle">Get a simpler way to manage your campus visits.</p>
+      <form onSubmit={submit} className="card mt-6 space-y-4 p-5 sm:p-6">
         {FIELDS.map((f) => (
           <div key={f.name}>
             <label className="label" htmlFor={f.name}>{f.label}</label>
