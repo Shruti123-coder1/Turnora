@@ -50,6 +50,7 @@ export default function App() {
       <Route element={<PrivateRoute roles={['STAFF', 'ADMIN']} />}>
         <Route path="staff" element={<DashboardLayout />}>
           <Route index element={<CounterScreen />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
       </Route>
 
@@ -59,6 +60,7 @@ export default function App() {
           <Route path="services" element={<ManageServices />} />
           <Route path="counters" element={<ManageCounters />} />
           <Route path="staff" element={<ManageStaff />} />
+          <Route path="notifications" element={<Notifications />} />
           <Route path="history" element={<History />} />
         </Route>
       </Route>

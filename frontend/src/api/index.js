@@ -23,7 +23,9 @@ export const ticketApi = {
 
 export const notificationApi = {
   list: () => data(api.get('/notifications')),
+  unreadCount: () => data(api.get('/notifications/unread-count')),
   markRead: (id) => data(api.put(`/notifications/${id}/read`)),
+  markAllRead: () => data(api.put('/notifications/read-all')),
 };
 
 export const counterApi = {

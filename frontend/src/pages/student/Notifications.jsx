@@ -28,8 +28,12 @@ export default function Notifications() {
   };
 
   const markAll = async () => {
-    await Promise.all(items.filter((n) => !n.read).map((n) => notificationApi.markRead(n.id).catch(() => null)));
-    load();
+    try {
+      await notificationApi.markAllRead();
+      load();
+    } catch (e) {
+      setError(errorMessage(e));
+    }
   };
 
   const unread = (items || []).filter((n) => !n.read).length;
@@ -42,7 +46,7 @@ export default function Notifications() {
       </div>
       {error && <p role="alert" className="text-sm text-alert">{error}</p>}
       {!items && !error && <Loader />}
-      {items && items.length === 0 && <div className="card p-8 text-center text-muted">Nothing here yet. Updates about your tokens will appear here.</div>}
+      {items && items.length === 0 && <div className="card p-8 text-center text-muted">No notifications yet</div>}
 
       <ul className="space-y-3">
         {items?.map((n) => (
