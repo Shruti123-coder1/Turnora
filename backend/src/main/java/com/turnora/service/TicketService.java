@@ -100,6 +100,8 @@ public class TicketService {
         String message = "Your token " + ticket.getTokenNumber() + " for " + service.getName()
                 + " is confirmed. Estimated wait: " + response.estimatedWaitMinutes() + " min.";
         notificationService.notifyTicket(ticket, "CREATED", message, true);
+        notificationService.notifyOperations(ticket, "QUEUE_CREATED",
+                "New token " + ticket.getTokenNumber() + " joined the " + service.getName() + " queue.");
 
         Long serviceId = service.getId();
         Long ticketId = ticket.getId();
@@ -134,6 +136,11 @@ public class TicketService {
         ticket = ticketRepository.save(ticket);
         queueService.recordEvent(ticket, "CANCELLED", TicketStatus.WAITING, TicketStatus.CANCELLED,
                 null, actor.id());
+        notificationService.notifyTicket(ticket, "CANCELLED",
+                "Your token " + ticket.getTokenNumber() + " has been cancelled.", false);
+        notificationService.notifyOperations(ticket, "QUEUE_CANCELLED",
+                "Token " + ticket.getTokenNumber() + " was cancelled from the "
+                        + ticket.getService().getName() + " queue.");
 
         Long serviceId = ticket.getService().getId();
         Long id = ticket.getId();

@@ -18,6 +18,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final NotificationService notificationService;
 
     // Student registration
     @Transactional
@@ -37,6 +38,8 @@ public class AuthService {
                 .role(Role.STUDENT)
                 .build();
         user = userRepository.save(user);
+        notificationService.notifyRole(Role.ADMIN, null, "STUDENT_REGISTERED",
+                "New student account registered: " + user.getFullName() + ".");
 
         return new AuthDto.AuthResponse(jwtUtil.generateToken(user), toResponse(user));
     }

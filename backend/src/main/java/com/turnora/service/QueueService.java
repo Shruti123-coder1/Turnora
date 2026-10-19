@@ -101,6 +101,8 @@ public class QueueService {
         recordEvent(next, "CALLED", TicketStatus.WAITING, TicketStatus.CALLED, counter.getId(), actor.id());
         notificationService.notifyTicket(next, "CALLED",
                 "Token " + next.getTokenNumber() + ", please go to " + counter.getName() + ".", true);
+        notificationService.notifyOperations(next, "TOKEN_CALLED",
+                "Token " + next.getTokenNumber() + " was called at " + counter.getName() + ".");
 
         afterChange(next.getService().getId(), next.getId());
         return buildState(counter);
@@ -121,6 +123,10 @@ public class QueueService {
         ticketRepository.save(ticket);
 
         recordEvent(ticket, "STARTED", TicketStatus.CALLED, TicketStatus.SERVING, counter.getId(), actor.id());
+        notificationService.notifyTicket(ticket, "SERVING",
+                "Service for token " + ticket.getTokenNumber() + " has started at " + counter.getName() + ".", false);
+        notificationService.notifyOperations(ticket, "TOKEN_SERVING",
+                "Token " + ticket.getTokenNumber() + " is now being served at " + counter.getName() + ".");
         afterChange(ticket.getService().getId(), ticket.getId());
         return buildState(counter);
     }
@@ -147,6 +153,10 @@ public class QueueService {
         }
 
         recordEvent(ticket, "COMPLETED", from, TicketStatus.COMPLETED, counter.getId(), actor.id());
+        notificationService.notifyTicket(ticket, "COMPLETED",
+                "Token " + ticket.getTokenNumber() + " has been completed. Thank you.", false);
+        notificationService.notifyOperations(ticket, "TOKEN_COMPLETED",
+                "Token " + ticket.getTokenNumber() + " was completed at " + counter.getName() + ".");
         afterChange(ticket.getService().getId(), ticket.getId());
         return buildState(counter);
     }
@@ -168,6 +178,8 @@ public class QueueService {
         recordEvent(ticket, "NO_SHOW", from, TicketStatus.NO_SHOW, counter.getId(), actor.id());
         notificationService.notifyTicket(ticket, "NO_SHOW",
                 "You missed your turn. Token " + ticket.getTokenNumber() + " is closed.", false);
+        notificationService.notifyOperations(ticket, "TOKEN_NO_SHOW",
+                "Token " + ticket.getTokenNumber() + " was marked no-show at " + counter.getName() + ".");
 
         afterChange(ticket.getService().getId(), ticket.getId());
         return buildState(counter);
@@ -204,6 +216,8 @@ public class QueueService {
         notificationService.notifyTicket(ticket, "TRANSFERRED",
                 "You are moved to the " + target.getName() + " queue. Your token " + ticket.getTokenNumber()
                         + " stays the same.", false);
+        notificationService.notifyOperations(ticket, "TOKEN_TRANSFERRED",
+                "Token " + ticket.getTokenNumber() + " was transferred to the " + target.getName() + " queue.");
 
         notifyNearTurn(old.getId());
         notifyNearTurn(target.getId());
@@ -235,6 +249,8 @@ public class QueueService {
 
         counter.setStatus(newStatus);
         counterRepository.save(counter);
+        notificationService.notifyOperations(null, "COUNTER_STATUS",
+                counter.getName() + " is now " + newStatus.name() + ".");
 
         // Waiting time depends on the number of active counters, so the queues are refreshed
         List<Long> serviceIds = counter.getServices().stream().map(ServiceType::getId).toList();
